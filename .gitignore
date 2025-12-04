@@ -1,0 +1,44 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+
+# MSYS2 or Unix-style venvs
+bin/
+lib/
+lib64/
+share/
+
+# Environment variables / secrets
+*.env
+
+# Logs
+*.log
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# PyInstaller
+*.spec
+
+# Django / Flask specific (if needed)
+*.sqlite3
+
+# macOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
