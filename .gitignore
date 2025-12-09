@@ -42,3 +42,6 @@ dist/
 
 # Windows files
 Thumbs.db
+
+../n8n-docker/n8n_data/database.sqlite
+../n8n-docker/postgres_data/
