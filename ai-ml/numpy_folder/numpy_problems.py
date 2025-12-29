@@ -153,3 +153,27 @@ print(y)
 
 # Shuffle X and y together while maintaining correspondence.
 
+perm = rng.permutation(nums.shape[0])
+
+shuffeled_nums = nums[perm]
+shuffeled_y = y[perm]
+
+print(shuffeled_nums,shuffeled_y)
+
+# 1️⃣3️⃣ Train-test split
+
+# Split the dataset into:
+
+# 75% training
+
+# 25% testing
+# Using only NumPy.
+
+random_vals = rng.random(dataset.shape[0])
+
+mask = random_vals <= 0.25
+
+testing = dataset[mask]
+training = dataset[~mask]
+
+print(testing.shape,training.shape)
