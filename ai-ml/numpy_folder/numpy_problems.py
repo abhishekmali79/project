@@ -142,6 +142,9 @@ print(nums)
 # y = 0 otherwise
 # (Choose a reasonable threshold.)
 
+#____________________________________________________________________________________________________
+# Labels are the correct outputs (answers) that your model is trying to learn to predict.
+
 mask = nums.sum(axis=1) > 2
 y = np.zeros(nums.shape[0],dtype=int)
 y[mask] = 1 
@@ -177,3 +180,113 @@ testing = dataset[mask]
 training = dataset[~mask]
 
 print(testing.shape,training.shape)
+
+# 🔴 LEVEL 5: Linear Algebra & Optimization (Advanced)
+# 1️⃣4️⃣ Weight initialization
+
+# Initialize a weight vector w with:
+
+# shape = (number of features,)
+
+# values from normal distribution (mean = 0, std = 0.01)
+
+#____________________________________________________________________________________________________
+# WEIGHT :- Weights are learnable importance scores for features.
+
+w = rng.normal(0,0.01,size=nums.shape[1])
+
+print(nums.shape,w.shape)
+print(w)
+
+# 1️⃣5️⃣ Linear model prediction
+
+# Compute predictions: y_pred = X @ w
+
+#____________________________________________________________________________________________________
+# 1️⃣ What is a linear model prediction? (Intuition)
+
+# DEFINATION :- A linear model predicts an output by taking a weighted sum of features.
+# HOW TO COMPUTE :- Linear model prediction = dot product of features and weights.
+
+y_pred = nums @ w
+
+print(y_pred)
+
+# 1️⃣6️⃣ Mean Squared Error (MSE)
+
+# Compute MSE between:
+
+# true labels y
+
+# predictions y_pred
+
+#____________________________________________________________________________________________________
+# 📌 What is MSE (Mean Squared Error)?
+
+# DEFINATION :- MSE stands for Mean Squared Error.
+# It is a loss function used in regression to measure how far your model’s predictions are from the true values.
+# In simple words:
+# MSE tells you how wrong your predictions are, on average.
+
+print(y.shape,w.shape)
+MSE = np.mean((y - y_pred)**2)
+
+print(MSE)
+
+# 1️⃣7️⃣ Gradient computation
+
+# Compute the gradient of MSE with respect to w using NumPy only.
+
+#____________________________________________________________________________________________________
+# What is a Gradient?
+# Simple definition
+
+# A gradient tells you how much a function changes when its inputs change.
+
+# In ML:
+
+# The function = loss function (like MSE)
+
+# The inputs = model parameters (weights)
+
+# So:
+
+# Gradient = direction and amount by which weights should change to reduce error
+
+n = len(y)
+
+G = 2/n * nums.T @ (y_pred - y) #here (G) is the gradient (y_pred) is the prediction calculated by (nums * w), (y) is the labels 
+
+print(G)
+
+# 1️⃣8️⃣ Gradient descent step
+
+# Update weights using:
+
+# w = w - learning_rate * gradient
+
+#____________________________________________________________________________________________________
+# 📌 What is a Gradient Descent Step?
+
+# A gradient descent step is one update of the model’s weights that moves them in the direction that reduces the loss (error).
+
+# In simple words:
+
+# It is one learning move made by the model.
+
+print(w)
+learning_rate = 0.01
+
+w = w - learning_rate * G
+print(w)
+
+# 🔥 BONUS (Deep Understanding)
+# 1️⃣9️⃣ Broadcasting logic
+
+# Explain why this works:
+
+# (X - X.mean(axis=0)) / X.std(axis=0)
+
+# answer :- This works because X has shape (n_samples, n_features) and X.mean(axis=0) and X.std(axis=0) return arrays of shape (n_features,).
+# NumPy broadcasts these 1-D arrays across all rows of X, effectively treating them as shape (1, n_features).
+# This allows feature-wise subtraction and division to be applied to every sample without explicit loops.
