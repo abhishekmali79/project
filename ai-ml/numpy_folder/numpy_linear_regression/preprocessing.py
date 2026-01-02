@@ -1,8 +1,4 @@
 import numpy as np
-from data_generation import dataset,y,rng
-
-mean = dataset.mean(axis=0)
-std = dataset.std(axis=0)
 
 # Standardization/normalization is a data preprocessing technique where each feature is transformed so that it has:
 
@@ -18,31 +14,45 @@ std = dataset.std(axis=0)
 
 # Large-scale features stop dominating small-scale ones
 
-stdr_dataset = (dataset - mean)/std
-
-print(stdr_dataset)
+def standardization(dataset):
+    mean = dataset.mean(axis=0)
+    std = dataset.std(axis=0)
+    std[std == 0] = 1
+    
+    stdr_dataset = (dataset - mean)/std
+    
+    print(stdr_dataset[:5])
+    return stdr_dataset
 
 # Short answer (intuition)
 
 # We add a bias so the model can shift the prediction up or down, instead of being forced to pass through the origin (0).
+def add_bias(stdr_dataset):
+    print(stdr_dataset.shape)
+    dataset_bias = np.c_[np.ones(stdr_dataset.shape[0]),stdr_dataset]
 
-print(stdr_dataset.shape)
-dataset_bias = np.c_[np.ones(stdr_dataset.shape[0]),stdr_dataset]
-print(dataset_bias.shape)
+    print(dataset_bias.shape)
+    return dataset_bias
 
+def shuffle_data(rng,dataset_bias,y):
+    perm = rng.permutation(dataset_bias.shape[0]) # rng.permutation(dataset.shape[0]) generates a random shuffle of row indices, used to reorder (shuffle) the dataset and labels together without breaking their correspondence.
 
-perm = rng.permutation(dataset.shape[0]) # rng.permutation(dataset.shape[0]) generates a random shuffle of row indices, used to reorder (shuffle) the dataset and labels together without breaking their correspondence.
+    dataset_bias = dataset_bias[perm]
+    y = y[perm]
 
-dataset = dataset[perm]
-y = y[perm]
+    print(dataset_bias[:6],y[:])
 
-print(dataset[:][:6],y[:][:6])
+    return dataset_bias,y
 
-random_vals = rng.random(dataset.shape[0])
-mask = random_vals > 0.20
+def train_test_split(rng,dataset_bias,y):
+    random_vals = rng.random(dataset_bias.shape[0])
+    mask = random_vals > 0.20
 
-training = dataset[mask]
-testing = dataset[~mask]
+    training = dataset_bias[mask]
+    testing = dataset_bias[~mask]
+    y_training = y[mask]
+    y_testing = y[~mask]
 
-print(training.shape,testing.shape)
+    print(training.shape,testing.shape)
+    return training,testing,y_training,y_testing
 

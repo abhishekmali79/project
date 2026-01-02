@@ -1,28 +1,37 @@
-from data_generation import *
-from preprocessing import *
+import numpy as np
 
-w = rng.normal(0,0.01,size=(4,1))
-print(w)
+def initial_weights(rng,n_features):
+    w = rng.normal(0,0.01,size=(n_features,1))
+    print(w)
+    return w
 
-print(dataset_bias.shape,w.shape)
+def pred(dataset_bias,w):
+    print(dataset_bias.shape,w.shape)
+    y_pred = dataset_bias @ w
+    print(y_pred.shape,dataset_bias.shape,w.shape)
+    print(y_pred[:6,:],dataset_bias[:6,:])
+    return y_pred
 
-y_pred = dataset_bias @ w
-print(y_pred.shape,y.shape,dataset_bias.shape,w.shape)
-print(y_pred[:6,:],dataset_bias[:6,:])
+def calc_loss(y,y_pred):
+    y = y.reshape(-1,1)
+    print(y.shape,y_pred.shape)
+    MSE = np.mean((y - y_pred)**2)
 
+    print(MSE)
+    return MSE
 
-y = y.reshape(-1,1)
-print(y.shape,y_pred.shape)
-MSE = np.mean((y - y_pred)**2)
+def calc_gredient(dataset_bias,y,y_pred):
+    n = dataset_bias.shape[0]
+    y = y.reshape(-1,1)
+    print(y.shape,y_pred.shape)
+    gradient = (2/n) * dataset_bias.T @ (y_pred - y)
+    
+    print(gradient.shape)
 
-print(MSE)
+    return gradient
 
-n = dataset_bias.shape[0]
-print(y.shape,y_pred.shape)
-gradient = (2/n) * dataset_bias.T @ (y_pred - y)
-print(gradient.shape)
-
-learning_rate = 0.01
-
-w = w - learning_rate * gradient
-print(w.shape)
+def update_weights(w,learning_rate,gradient):
+    w = w - learning_rate * gradient
+    print(w.shape)  
+    return w
+    
