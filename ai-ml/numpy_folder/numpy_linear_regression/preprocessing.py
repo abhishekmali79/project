@@ -20,18 +20,15 @@ def standardization(dataset):
     std[std == 0] = 1
     
     stdr_dataset = (dataset - mean)/std
-    
-    print(stdr_dataset[:5])
+
     return stdr_dataset
 
 # Short answer (intuition)
 
 # We add a bias so the model can shift the prediction up or down, instead of being forced to pass through the origin (0).
 def add_bias(stdr_dataset):
-    print(stdr_dataset.shape)
     dataset_bias = np.c_[np.ones(stdr_dataset.shape[0]),stdr_dataset]
 
-    print(dataset_bias.shape)
     return dataset_bias
 
 def shuffle_data(rng,dataset_bias,y):
@@ -39,8 +36,6 @@ def shuffle_data(rng,dataset_bias,y):
 
     dataset_bias = dataset_bias[perm]
     y = y[perm]
-
-    print(dataset_bias[:6],y[:])
 
     return dataset_bias,y
 
@@ -53,6 +48,5 @@ def train_test_split(rng,dataset_bias,y):
     y_training = y[mask]
     y_testing = y[~mask]
 
-    print(training.shape,testing.shape)
     return training,testing,y_training,y_testing
 
